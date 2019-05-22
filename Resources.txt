@@ -1,0 +1,3 @@
+https://learn.sparkfun.com/tutorials/obd-ii-uart-hookup-guide
+
+https://stackoverflow.com/questions/6947413/how-to-open-read-and-write-from-serial-port-in-c
