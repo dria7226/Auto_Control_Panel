@@ -1,5 +1,9 @@
 #include "includes.c"
 
+int i = 0;
+#define MAX_DATA_POINTS 200
+unsigned char sensor_readings[2][MAX_DATA_POINTS];
+
 #ifdef WIN32
 #include "Helpers/wnd_proc.c"
 #endif
