@@ -1,4 +1,5 @@
 #ifdef WIN32
+BOOL  Status;
 hComm = CreateFile( port_name,                  // Name of the Port to be Opened
                     GENERIC_READ | GENERIC_WRITE, // Read/Write Access
                     0,                            // No Sharing, ports cant be shared
@@ -7,10 +8,7 @@ hComm = CreateFile( port_name,                  // Name of the Port to be Opened
                     0,                            // Non Overlapped I/O
                     NULL);                        // Null for Comm Devices
 
-if (hComm == INVALID_HANDLE_VALUE)
-    printf("\n    Error! - Port %s can't be opened\n", port_name);
-else
-    printf("\n  Port %s opened successfully ", port_name);
+if (hComm == INVALID_HANDLE_VALUE) return 1;
 #endif
 
 #ifdef UNIX
@@ -19,8 +17,5 @@ fd = open(port_name,O_RDWR | O_NOCTTY);	/* ttyUSB0 is the FT232 based USB2SERIAL
                     /* O_NOCTTY - No terminal will control the process   */
                     /* Open in blocking mode,read will wait              */
 
-if(fd == -1)						/* Error Checking */
-       printf("\n  Error! - Port %s can't be opened\n", port_name);
-else
-       printf("\n  Port %s opened successfully ", port_name);
+if(fd == -1) return 1;
 #endif

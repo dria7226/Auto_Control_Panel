@@ -4,35 +4,20 @@ dcbSerialParams.DCBlength = sizeof(dcbSerialParams);
 
 Status = GetCommState(hComm, &dcbSerialParams);      //retreives  the current settings
 
-if (Status == FALSE)
-    printf("\n    Error! in GetCommState()");
+if (Status == FALSE) return 2;
 
-dcbSerialParams.BaudRate = CBR_9600;      // Setting BaudRate = 9600
-dcbSerialParams.ByteSize = 8;             // Setting ByteSize = 8
-dcbSerialParams.Parity = NOPARITY;        // Setting Parity = None
-dcbSerialParams.StopBits = ONESTOPBIT;    // Setting StopBits = 1
+dcbSerialParams.BaudRate = arg_baudrate;
+dcbSerialParams.ByteSize = arg_bytesize;
+dcbSerialParams.Parity = arg_parity;
+dcbSerialParams.StopBits = arg_stopbits;
 
 Status = SetCommState(hComm, &dcbSerialParams);  //Configuring the port according to settings in DCB
 
-if (Status == FALSE)
-{
-    printf("\n    Error! in Setting DCB Structure");
-}
-else //If Successfull display the contents of the DCB Structure
-{
-    printf("\n\n    Setting DCB Structure Successfull\n");
-    printf("\n       Baudrate = %d", dcbSerialParams.BaudRate);
-    printf("\n       ByteSize = %d", dcbSerialParams.ByteSize);
-    printf("\n       StopBits = %d", dcbSerialParams.StopBits);
-    printf("\n       Parity   = %d", dcbSerialParams.Parity);
-}
+if (Status == FALSE) return 3;
 
 Status = SetCommMask(hComm, EV_RXCHAR); //Configure Windows to Monitor the serial device for Character Reception
 
-if (Status == FALSE)
-    printf("\n\n    Error! in Setting CommMask");
-else
-    printf("\n\n    Setting CommMask successfull");
+if (Status == FALSE) return 4;
 
 COMMTIMEOUTS timeouts = { 0 };
 timeouts.ReadIntervalTimeout         = 50;
@@ -41,10 +26,7 @@ timeouts.ReadTotalTimeoutMultiplier  = 10;
 timeouts.WriteTotalTimeoutConstant   = 50;
 timeouts.WriteTotalTimeoutMultiplier = 10;
 
-if (SetCommTimeouts(hComm, &timeouts) == FALSE)
-    printf("\n\n    Error! in Setting Time Outs");
-else
-    printf("\n\n    Setting Serial Port Timeouts Successfull");
+if (SetCommTimeouts(hComm, &timeouts) == FALSE) return 5;
 #endif
 
 #ifdef UNIX
